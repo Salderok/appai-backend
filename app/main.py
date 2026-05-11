@@ -15,10 +15,6 @@ client = OpenAI(
 class ChatRequest(BaseModel):
     message: str
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
 @app.post("/chat")
 def chat(req: ChatRequest):
 
@@ -32,6 +28,8 @@ def chat(req: ChatRequest):
         ]
     )
 
+    content = response.choices[0].message.content
+
     return {
-        "response": response.choices[0].message.content
+        "response": content if content else "No response from AI"
     }
